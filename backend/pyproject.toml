@@ -8,6 +8,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "^4.2.6"
+drf-yasg = "^1.21.7"
+djangorestframework = "^3.14.0"
+setuptools = "^68.2.2"
 
 
 [build-system]

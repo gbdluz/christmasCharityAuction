@@ -13,7 +13,7 @@ export default function Home() {
       <div>This is our auctions list page:</div>
       <Card>
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
+          <CardTitle>Card Title with “g” letter</CardTitle>
           <CardDescription>Card Description</CardDescription>
         </CardHeader>
         <CardContent>

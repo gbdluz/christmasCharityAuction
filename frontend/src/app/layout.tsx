@@ -1,8 +1,21 @@
+import { DarkModeToggle } from "@/components/dark-mode-toggle";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const dmSerif = DM_Serif_Display({
+  weight: ["400"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-dm-serif",
+});
+const dmSans = DM_Sans({
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +29,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${dmSerif.variable} ${dmSans.variable} font-sans`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <DarkModeToggle />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

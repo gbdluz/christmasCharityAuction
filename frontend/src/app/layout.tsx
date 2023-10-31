@@ -1,4 +1,4 @@
-import { DarkModeToggle } from "@/components/dark-mode-toggle";
+import Navbar from "@/app/navbar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
@@ -30,15 +30,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSerif.variable} ${dmSans.variable} font-sans`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <DarkModeToggle />
-          {children}
-        </ThemeProvider>
+        <div className="relative flex min-h-screen flex-col">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            {children}
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );

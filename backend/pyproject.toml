@@ -11,6 +11,11 @@ django = "^4.2.6"
 drf-yasg = "^1.21.7"
 djangorestframework = "^3.14.0"
 setuptools = "^68.2.2"
+djangorestframework-simplejwt = "^5.3.0"
+django-allauth = "^0.55.0"
+dj-rest-auth = {extras = ["with-social"], version = "^5.0.1"}
+django-cors-headers = "^4.3.0"
+whitenoise = "^6.6.0"
 
 
 [build-system]

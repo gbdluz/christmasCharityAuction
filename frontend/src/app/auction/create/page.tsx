@@ -37,10 +37,9 @@ const Page = () => {
       title: '',
       description: '',
       auctionEnd: new Date(),
-      bidValue: '10',
-      collectionEnd: new Date(),
     }
   })
+  const { handleSubmit } = form;
 
   const onSubmit = (input: z.infer<typeof schema>) => {
     console.log(input)
@@ -58,14 +57,14 @@ const Page = () => {
 
   return (
     <div className="flex justify-center">
-      <Card className="w-[350px]">
+      <Card className="lg:w-2/3">
         <CardHeader>
           <CardTitle>Dodaj ofertę</CardTitle>
           <CardDescription>Możesz zaoferować usługę lub dodać jakiś produkt</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
                 name="title"
@@ -99,7 +98,7 @@ const Page = () => {
                   <FormItem>
                     <FormLabel>Liczba zwycięzców</FormLabel>
                     <FormControl>
-                      <Input placeholder="wprowadź liczbę zwycięzców" type="number" min={1} {...field} />
+                      <Input placeholder="wprowadź liczbę zwycięzców" type="number" min="1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -107,10 +106,10 @@ const Page = () => {
               />
               <FormField
                 control={form.control}
-                name="collectionEnd"
+                name="auctionEnd"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>planowany koniec licytacji</FormLabel>
+                    <FormLabel>Planowany koniec licytacji</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -159,46 +158,48 @@ const Page = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="auctionEnd"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Termin zebrania środków</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Wybierz datę</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => isDatedisabled(date)}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
+              <div className="lg:flex lg:justify-between">
+                <FormField
+                  control={form.control}
+                  name="collectionEnd"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Termin zebrania środków</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Wybierz datę</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) => isDatedisabled(date)}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="float-right mt-4">Submit</Button>
+              </div>
             </form>
           </Form>
         </CardContent>

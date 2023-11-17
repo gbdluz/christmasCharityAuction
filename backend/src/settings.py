@@ -40,8 +40,11 @@ INSTALLED_APPS = [
     'rest_framework',
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
-    'drf_yasg',
+    "drf_spectacular",
+
     "src.apps.authentication",
+    "src.apps.auction",
+
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -131,8 +134,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_AUTHENTICATION_CLASSFES": [
+        "rest_framework_simplejwt.authentication.FJWTAuthentication",
     ]
 }
 
@@ -163,3 +167,11 @@ else:
         "http://localhost:3000/",
         "http://127.0.0.1:3000/",
     ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}

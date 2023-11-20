@@ -17,6 +17,8 @@ dj-rest-auth = {extras = ["with-social"], version = "^5.0.1"}
 django-cors-headers = "^4.3.0"
 whitenoise = "^6.6.0"
 pillow = "^10.1.0"
+drf-spectacular = "^0.26.5"
+chardet = "^5.2.0"
 
 
 [build-system]

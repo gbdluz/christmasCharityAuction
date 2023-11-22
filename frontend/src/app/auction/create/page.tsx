@@ -1,66 +1,72 @@
-'use client'
-import * as React from "react"
+"use client";
 
+import { schema } from "@/app/validators/create-auction";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
-import { schema } from "@/app/validators/create-auction"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
-
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const Page = () => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      winnersNumber: '1',
-      title: '',
-      description: '',
+      winnersNumber: "1",
+      title: "",
+      description: "",
       auctionEnd: new Date(),
-    }
-  })
+    },
+  });
   const { handleSubmit } = form;
 
   const onSubmit = (input: z.infer<typeof schema>) => {
-    console.log(input)
-  }
+    console.log(input);
+  };
   const isDatedisabled = (date: Date) => {
     const now = new Date();
-    if (date.getDate() === now.getDate()
-      && date.getMonth() === now.getMonth()
-      && date.getFullYear() === now.getFullYear()
+    if (
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
     ) {
       return false;
     }
-    return date < now
-  }
+    return date < now;
+  };
 
   return (
     <div className="flex justify-center">
       <Card className="lg:w-2/3">
         <CardHeader>
           <CardTitle>Dodaj ofertę</CardTitle>
-          <CardDescription>Możesz zaoferować usługę lub dodać jakiś produkt</CardDescription>
+          <CardDescription>
+            Możesz zaoferować usługę lub dodać jakiś produkt
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -98,7 +104,12 @@ const Page = () => {
                   <FormItem>
                     <FormLabel>Liczba zwycięzców</FormLabel>
                     <FormControl>
-                      <Input placeholder="wprowadź liczbę zwycięzców" type="number" min="1" {...field} />
+                      <Input
+                        placeholder="wprowadź liczbę zwycięzców"
+                        type="number"
+                        min="1"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,7 +128,7 @@ const Page = () => {
                             variant={"outline"}
                             className={cn(
                               "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
                             )}
                           >
                             {field.value ? (
@@ -134,9 +145,7 @@ const Page = () => {
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
-                            isDatedisabled(date)
-                          }
+                          disabled={(date) => isDatedisabled(date)}
                           initialFocus
                         />
                       </PopoverContent>
@@ -152,7 +161,12 @@ const Page = () => {
                   <FormItem>
                     <FormLabel>Minimalna wartość aukcji</FormLabel>
                     <FormControl>
-                      <Input placeholder="Wprowadź cyfrę" type="number" min="1" {...field} />
+                      <Input
+                        placeholder="Wprowadź cyfrę"
+                        type="number"
+                        min="1"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -172,7 +186,7 @@ const Page = () => {
                               variant={"outline"}
                               className={cn(
                                 "w-[240px] pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
+                                !field.value && "text-muted-foreground",
                               )}
                             >
                               {field.value ? (
@@ -198,14 +212,16 @@ const Page = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="float-right mt-4">Submit</Button>
+                <Button type="submit" className="float-right mt-4">
+                  Dodaj
+                </Button>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

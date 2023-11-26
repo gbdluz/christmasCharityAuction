@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Heart, LogIn, LogOut, User } from "lucide-react";
+import { Loader2, LogIn, LogOut, User } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -12,15 +12,10 @@ export function SignInButton() {
   if (status == "loading") {
     return (
       <Button variant="outline" size={"icon"} disabled={true}>
-        <Heart className="h-5 w-5 animate-spin" />
+        <Loader2 className="h-5 w-5 animate-spin" />
       </Button>
     );
   }
-
-  // if (session) {
-  //   router.push("/temp/profile");
-  //   return;
-  // }
 
   return (
     <>
@@ -28,7 +23,7 @@ export function SignInButton() {
         <>
           <Button
             variant="outline"
-            onClick={() => router.push("temp/profile")}
+            onClick={() => router.push("/temp/profile")}
             size={"icon"}
           >
             <User className="h-5 w-5" />

@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
-    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.discord",
 ]
 
 MIDDLEWARE = [
@@ -138,8 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    "DEFAULT_AUTHENTICATION_CLASSFES": [
-        "rest_framework_simplejwt.authentication.FJWTAuthentication",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ]
 }
 
@@ -182,7 +182,7 @@ SPECTACULAR_SETTINGS = {
 load_dotenv()
 
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {
+    "discord": {
         "APP": {
             "client_id": os.getenv("DISCORD_APP_CLIENT_ID"),  # replace me
             "secret": os.getenv("DISCORD_APP_SECRET_KEY"),  # replace me

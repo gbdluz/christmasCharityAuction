@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
+import { NextAuthProvider } from "./providers";
 
 const dmSerif = DM_Serif_Display({
   weight: ["400"],
@@ -31,15 +32,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${dmSerif.variable} ${dmSans.variable} font-sans`}>
         <div className="relative flex min-h-screen flex-col">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            {children}
-          </ThemeProvider>
+          <NextAuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Navbar />
+              {children}
+            </ThemeProvider>
+          </NextAuthProvider>
         </div>
       </body>
     </html>

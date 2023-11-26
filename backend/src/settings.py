@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
+    "allauth.socialaccount.providers.discord",
 ]
 
 MIDDLEWARE = [
@@ -135,8 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    "DEFAULT_AUTHENTICATION_CLASSFES": [
-        "rest_framework_simplejwt.authentication.FJWTAuthentication",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ]
 }
 
@@ -174,4 +177,24 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
+}
+
+load_dotenv()
+
+SOCIALACCOUNT_PROVIDERS = {
+    "discord": {
+        "APP": {
+            "client_id": os.getenv("DISCORD_APP_CLIENT_ID"),  # replace me
+            "secret": os.getenv("DISCORD_APP_SECRET_KEY"),  # replace me
+            "key": "",  # leave empty
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "VERIFIED_EMAIL": True,
+    },
 }

@@ -55,3 +55,7 @@ class BidSerializer(serializers.Serializer):
     auction_id = serializers.IntegerField()
     value = serializers.IntegerField()
 
+
+class UserEditSerializer(serializers.Serializer):
+    first_name = serializers.CharField(max_length=50)
+    last_name = serializers.CharField(max_length=50)

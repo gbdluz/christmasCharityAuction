@@ -4,10 +4,12 @@ from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from src.apps.auction.models import Bid, Auction
-from src.apps.auction.serializers import EmptyAuctionSerializer, BidSerializer, AuctionSerializer, BidListSerializer
+from src.apps.auction.serializers import EmptyAuctionSerializer, BidSerializer, AuctionSerializer, BidListSerializer, \
+    UserEditSerializer
 from src.apps.auction.consts import BID_INCREMENT
 
 
@@ -87,3 +89,20 @@ class BidViewSet(viewsets.GenericViewSet):
             defaults={'value': value}
         )
         return Response(status=status.HTTP_201_CREATE)
+
+
+class UserEditView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserEditSerializer
+
+
+    def post(self, request):
+        serializer = UserEditSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = request.user
+        user.first_name = serializer.data['first_name']
+        user.last_name = serializer.data['last_name']
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+
+

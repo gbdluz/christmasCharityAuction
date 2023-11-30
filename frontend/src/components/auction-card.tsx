@@ -18,35 +18,26 @@ const AuctionCard = ({ auction }: { auction: AuctionWithBids }) => {
         <DialogTrigger asChild className="cursor-pointer">
           <Card className="transition-colors hover:bg-accent">
             <CardHeader>
-              <CardTitle>{auction.title}</CardTitle>
-              <CardDescription>{auction.description}</CardDescription>
+              <CardTitle className="[text-wrap:balance]">
+                {auction.title}
+              </CardTitle>
+              <p>
+                <span className="italic">{auction.user}</span> • do{" "}
+                {auction.auction_end_data
+                  ? new Date(auction.auction_end_data).toLocaleString("pl-PL", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                    })
+                  : ""}
+              </p>
             </CardHeader>
-            {/* <CardContent>
-              <Image
-                src={auction.photo}
-                alt={auction.title}
-                width={100}
-                height={100}
-              />
-              {/* <div>
-                Current bid:{" "}
-                {auction.bids.length
-                  ? auction.bids[0].price
-                  : auction.startPrice
-                  ? auction.startPrice
-                  : 0}
-              </div>
+            <CardContent>
+              <CardDescription className="line-clamp-3 whitespace-pre-wrap">
+                {auction.description}
+              </CardDescription>
             </CardContent>
-            <CardFooter>
-              <div>
-                Ends in:{" "}
-                {auction.auction_end_data?.toLocaleString("pl_PL", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
-            </CardFooter> */}
+            {/* <CardFooter></CardFooter> */}
           </Card>
         </DialogTrigger>
         <AuctionModal auction={auction} />

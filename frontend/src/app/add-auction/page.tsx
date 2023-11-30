@@ -3,13 +3,7 @@
 import { schema } from "@/app/validators/create-auction";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -24,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
@@ -46,7 +41,7 @@ const Page = () => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      winnersNumber: "1",
+      winnersNumber: 1,
       title: "",
       description: "",
       auctionEnd: new Date("2023-12-21"),
@@ -100,7 +95,7 @@ const Page = () => {
     ) {
       return false;
     }
-    const maxDate = new Date("2023-12-21");
+    const maxDate = new Date("2023-12-22");
 
     return date < now || date > maxDate;
   };
@@ -133,7 +128,7 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>Opis:</FormLabel>
                   <FormControl>
-                    <Input placeholder="Wprowadź opis" {...field} />
+                    <Textarea placeholder="Wprowadź opis" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,5 +1,4 @@
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -58,14 +57,18 @@ class BidViewSet(viewsets.GenericViewSet):
 
     @extend_schema(
         responses={
-            201: OpenApiResponse(description="Created or udpated"),
+            201: OpenApiResponse(response={'user_id': int}, description="Created or udpated"),
             400: OpenApiResponse(description="Bid value is too low"),
+            403: OpenApiResponse(description="The user cannot overbid their own bid if its the highest bid"),
             404: OpenApiResponse(description="No auction with given id")
         }
     )
     def create(self, request):
         auction_id, value = request.data["auction_id"], request.data["value"]
-        auction = get_object_or_404(Auction, id=auction_id)
+        try:
+            auction = Auction.objects.get(id=auction_id)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         user = request.user
 
         # Only allow bid creation if this is first bid of the user in an offer
@@ -73,7 +76,7 @@ class BidViewSet(viewsets.GenericViewSet):
         if auction.bid_set.count() > 0:
             top_bid = auction.bid_set.all().order_by('-value').first()
             if top_bid.user == request.user:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_403_FORBIDDEN)
             if top_bid.value + BID_INCREMENT > value:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -88,7 +91,7 @@ class BidViewSet(viewsets.GenericViewSet):
             auction=auction,
             defaults={'value': value}
         )
-        return Response(status=status.HTTP_201_CREATE)
+        return Response(status=status.HTTP_201_CREATED, data={'user_id': request.user.id})
 
 
 class UserEditView(APIView):

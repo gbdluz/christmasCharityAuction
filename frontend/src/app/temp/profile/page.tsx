@@ -25,20 +25,37 @@ export default function Profile() {
     }
   };
 
-  const newGetFunc = async () => {
+  const createAuction = async () => {
     try {
       const response = await axios({
         method: "post",
         url: process.env.NEXT_PUBLIC_BACKEND_URL + "auction/",
         headers: { Authorization: "Bearer " + session?.access_token },
         data: {
-          title: "test",
+          title: "Testowy tytuł",
+          description: "To jest całkiem długi opis tej aukcji",
+          num_of_winners: 2,
+          deadline: "2024-12-21",
+          min_bid_value: 10,
+          auction_end_data: "2023-12-21",
+          is_paid: false,
+          is_collected: false,
         },
       });
-      // const response = await axios({
-      //   method: "get",
-      //   url: process.env.NEXT_PUBLIC_BACKEND_URL + "auth/new/",
-      // });
+      setResponse(JSON.stringify(response.data));
+    } catch (error) {
+      const err = error as { message: string };
+      setResponse(err.message);
+    }
+  };
+
+  const getAuctions = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: process.env.NEXT_PUBLIC_BACKEND_URL + "auction/list/",
+        headers: { Authorization: "Bearer " + session?.access_token },
+      });
       setResponse(JSON.stringify(response.data));
     } catch (error) {
       const err = error as { message: string };
@@ -66,7 +83,8 @@ export default function Profile() {
           <Button onClick={() => getUserDetails(false)}>
             User details (without token)
           </Button>
-          <Button onClick={() => newGetFunc()}>New func</Button>
+          <Button onClick={() => createAuction()}>create auction</Button>
+          <Button onClick={() => getAuctions()}>get auctions</Button>
           <Button onClick={() => signOut({ callbackUrl: "/" })}>
             Sign out
           </Button>

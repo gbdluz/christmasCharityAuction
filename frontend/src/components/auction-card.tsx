@@ -21,14 +21,14 @@ const AuctionCard = ({ auction }: { auction: AuctionWithBids }) => {
               <CardTitle>{auction.title}</CardTitle>
               <CardDescription>{auction.description}</CardDescription>
             </CardHeader>
-            <CardContent>
+            {/* <CardContent>
               <Image
                 src={auction.photo}
                 alt={auction.title}
                 width={100}
                 height={100}
               />
-              <div>
+              {/* <div>
                 Current bid:{" "}
                 {auction.bids.length
                   ? auction.bids[0].price
@@ -38,8 +38,15 @@ const AuctionCard = ({ auction }: { auction: AuctionWithBids }) => {
               </div>
             </CardContent>
             <CardFooter>
-              <div>Ends in: {auction.endDate?.toString()}</div>
-            </CardFooter>
+              <div>
+                Ends in:{" "}
+                {auction.auction_end_data?.toLocaleString("pl_PL", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+            </CardFooter> */}
           </Card>
         </DialogTrigger>
         <AuctionModal auction={auction} />

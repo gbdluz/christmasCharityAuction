@@ -28,6 +28,16 @@ SECRET_KEY = 'django-insecure-+qdmj#6qwn)8_r#g7nf*7qh6n+pq%8l3lzg7hu$um7dx#-&y3s
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["localhost", "127.0.0.1", "christmascharityauction-production.up.railway.app"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://*.localhost",
+    "https://*.localhost",
+    "http://*.127.0.0.1",
+    "https://*.127.0.0.1",
+    "http://*.christmascharityauction-production.up.railway.app"
+    "https://*.christmascharityauction-production.up.railway.app"
+]
 
 # Application definition
 

@@ -1,6 +1,7 @@
 "use client";
 
 import AuctionCard from "@/components/auction-card";
+import { AuctionWithBids } from "@/lib/types/auction";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -27,7 +28,7 @@ const AuctionList = () => {
     <div>
       <h1>Auction List</h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data.toReversed().map((auction) => (
+        {data.toReversed().map((auction: AuctionWithBids) => (
           <AuctionCard key={auction.id} auction={auction} />
         ))}
       </div>

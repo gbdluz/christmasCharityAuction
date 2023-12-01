@@ -63,6 +63,12 @@ export default function Profile() {
     }
   };
 
+  const [showButtons, setShowButtons] = useState(false);
+
+  const toggleButtons = () => {
+    setShowButtons(!showButtons);
+  };
+
   if (status == "loading") {
     return <div className="h-4 w-4 animate-spin bg-primary"></div>;
   }
@@ -76,19 +82,28 @@ export default function Profile() {
           <span>Email: {session.user.email || "Not provided"}</span>
           <span className="font-mono">{response}</span>
         </div>
-        <span>
-          <Button onClick={() => getUserDetails(true)}>
-            User details (with token)
+        <div>
+          <Button onClick={toggleButtons} className="opacity-10">
+            Toggle buttons (for testing purposes)
           </Button>
-          <Button onClick={() => getUserDetails(false)}>
-            User details (without token)
-          </Button>
-          <Button onClick={() => createAuction()}>create auction</Button>
-          <Button onClick={() => getAuctions()}>get auctions</Button>
-          <Button onClick={() => signOut({ callbackUrl: "/" })}>
-            Sign out
-          </Button>
-        </span>
+          {showButtons ? (
+            <>
+              <Button onClick={() => getUserDetails(true)}>
+                User details (with token)
+              </Button>
+              <Button onClick={() => getUserDetails(false)}>
+                User details (without token)
+              </Button>
+              <Button onClick={() => createAuction()}>create auction</Button>
+              <Button onClick={() => getAuctions()}>get auctions</Button>
+              <Button onClick={() => signOut({ callbackUrl: "/" })}>
+                Sign out
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     );
   }

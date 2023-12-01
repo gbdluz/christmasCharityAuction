@@ -39,7 +39,6 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
     error,
     isLoading,
   } = useSWR(`auction/${18}/bids`, fetcher);
-  console.log(bids);
 
   const sortedBids = (bids as Bid[])?.sort((a, b) => b.value - a.value);
 
@@ -109,8 +108,8 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
               !bidValue ||
               (auction.min_bid_value &&
                 bidValue < auction.min_bid_value + 10) ||
-              (bids.length && bidValue < bids[0].value + 10) ||
-              (bids.length && bids[0].bidder_id === session?.user?.pk)
+              (bids?.length && bidValue < bids[0].value + 10) ||
+              (bids?.length && bids[0].bidder_id === session?.user?.pk)
             }
           >
             Licytuj

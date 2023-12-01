@@ -84,26 +84,26 @@ export default function Profile() {
         </div>
         <div>
           <Button onClick={toggleButtons} className="opacity-10">
-            Toggle buttons (for testing purposes)
+            Toggle buttons (testing purposes) – DO NOT CLICK PLIS 😇
           </Button>
-          {showButtons ? (
-            <>
-              <Button onClick={() => getUserDetails(true)}>
-                User details (with token)
-              </Button>
-              <Button onClick={() => getUserDetails(false)}>
-                User details (without token)
-              </Button>
-              <Button onClick={() => createAuction()}>create auction</Button>
-              <Button onClick={() => getAuctions()}>get auctions</Button>
-              <Button onClick={() => signOut({ callbackUrl: "/" })}>
-                Sign out
-              </Button>
-            </>
-          ) : (
-            <></>
-          )}
         </div>
+        {showButtons ? (
+          <div>
+            <Button onClick={() => getUserDetails(true)}>
+              User details (with token)
+            </Button>
+            <Button onClick={() => getUserDetails(false)}>
+              User details (without token)
+            </Button>
+            <Button onClick={() => createAuction()}>create auction</Button>
+            <Button onClick={() => getAuctions()}>get auctions</Button>
+            <Button onClick={() => signOut({ callbackUrl: "/" })}>
+              Sign out
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     );
   }

@@ -25,7 +25,7 @@ const BidsTable = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {bids.map((bid, index) => (
+        {(bids ? bids : []).map((bid, index) => (
           <TableRow key={bid.value}>
             <TableCell className="font-medium">
               {bid.bidder_firstname} {bid.bidder_lastname}

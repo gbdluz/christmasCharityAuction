@@ -35,7 +35,7 @@ const SIGN_IN_HANDLERS = {
 };
 const SIGN_IN_PROVIDERS = Object.keys(SIGN_IN_HANDLERS);
 
-export const authOptions = {
+const authOptions = {
   secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",

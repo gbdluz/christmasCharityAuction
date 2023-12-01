@@ -35,8 +35,9 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.localhost",
     "http://*.127.0.0.1",
     "https://*.127.0.0.1",
-    "http://*.christmascharityauction-production.up.railway.app"
-    "https://*.christmascharityauction-production.up.railway.app"
+    "http://*.christmascharityauction-production.up.railway.app",
+    "https://*.christmascharityauction-production.up.railway.app",
+    "https://christmascharityauction-production.up.railway.app"
 ]
 
 # Application definition

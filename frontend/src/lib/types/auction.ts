@@ -7,6 +7,8 @@ export type Auction = {
   is_paid: boolean;
   is_collected: boolean;
   user: number;
+  user_firstname: string;
+  user_lastname: string;
 
   min_bid_value?: number;
   auction_end_data?: Date;

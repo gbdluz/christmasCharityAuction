@@ -65,7 +65,11 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
           {auction.title}
         </DialogTitle>
         <p>
-          <span className="italic">{auction.user}</span> • do{" "}
+          <span className="italic">
+            {auction.user_firstname}
+            {auction.user_lastname ? ` ${auction.user_lastname}` : ""}
+          </span>{" "}
+          • do{" "}
           {auction.auction_end_data
             ? new Date(auction.auction_end_data).toLocaleString("pl-PL", {
                 year: "numeric",

@@ -24,6 +24,7 @@ const SIGN_IN_HANDLERS = {
           access_token: account["access_token"],
         },
       });
+      // TODO: maybe add passing profile avatar here?
       account["meta"] = response.data;
       return true;
     } catch (error) {
@@ -41,29 +42,29 @@ export const authOptions = {
     maxAge: BACKEND_REFRESH_TOKEN_LIFETIME,
   },
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      // The data returned from this function is passed forward as the
-      // `user` variable to the signIn() and jwt() callback
-      async authorize(credentials, req) {
-        try {
-          const response = await axios({
-            url: process.env.NEXTAUTH_BACKEND_URL + "auth/login/",
-            method: "post",
-            data: credentials,
-          });
-          const data = response.data;
-          if (data) return data;
-        } catch (error) {
-          console.error(error);
-        }
-        return null;
-      },
-    }),
+    // CredentialsProvider({
+    //   name: "Credentials",
+    //   credentials: {
+    //     username: { label: "Username", type: "text" },
+    //     password: { label: "Password", type: "password" },
+    //   },
+    //   // The data returned from this function is passed forward as the
+    //   // `user` variable to the signIn() and jwt() callback
+    //   async authorize(credentials, req) {
+    //     try {
+    //       const response = await axios({
+    //         url: process.env.NEXTAUTH_BACKEND_URL + "auth/login/",
+    //         method: "post",
+    //         data: credentials,
+    //       });
+    //       const data = response.data;
+    //       if (data) return data;
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //     return null;
+    //   },
+    // }),
     DiscordProvider({
       clientId: process.env.DISCORD_APP_CLIENT_ID,
       clientSecret: process.env.DISCORD_APP_SECRET_KEY,
@@ -73,6 +74,14 @@ export const authOptions = {
           access_type: "offline",
           response_type: "code",
         },
+      },
+      profile: (profile) => {
+        return {
+          id: profile.id,
+          name: profile.username,
+          image: `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`,
+          email: profile.email,
+        };
       },
     }),
   ],

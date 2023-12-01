@@ -1,5 +1,6 @@
 import Navbar from "@/app/navbar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
@@ -12,7 +13,7 @@ const dmSerif = DM_Serif_Display({
   variable: "--font-dm-serif",
 });
 const dmSans = DM_Sans({
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "700"],
   style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-dm-sans",
@@ -40,7 +41,8 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Navbar />
-              {children}
+              <main>{children}</main>
+              <Toaster />
             </ThemeProvider>
           </NextAuthProvider>
         </div>

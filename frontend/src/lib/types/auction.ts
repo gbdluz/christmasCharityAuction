@@ -4,11 +4,12 @@ export type Auction = {
   description: string;
   photo: string;
   numOfWinners: number;
-  isPaid: boolean;
-  isCollected: boolean;
+  is_paid: boolean;
+  is_collected: boolean;
+  user: number;
 
-  startPrice?: number;
-  endDate?: Date;
+  min_bid_value?: number;
+  auction_end_data?: Date;
   deadline?: Date;
 };
 

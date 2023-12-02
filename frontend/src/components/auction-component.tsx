@@ -1,6 +1,6 @@
 "use client";
 
-import { AuctionWithBids } from "@/lib/types/auction";
+import { Auction as AuctionComponent } from "@/lib/types/auction";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -8,14 +8,8 @@ import { useState } from "react";
 import useSWR from "swr";
 import BidsTable from "./bids-table";
 import { Button } from "./ui/button";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/dialog";
 import { Input } from "./ui/input";
+import { Separator } from "./ui/separator";
 
 export type Bid = {
   value: number;
@@ -24,7 +18,7 @@ export type Bid = {
   bidder_id: number;
 };
 
-const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
+const AuctionComponent = ({ auction }: { auction: AuctionComponent }) => {
   const { data: session } = useSession();
 
   const fetcher = (url: string) =>
@@ -34,7 +28,12 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
       })
       .then((res) => res.data);
 
-  const { data: bids, error, isLoading } = useSWR(`auction/${4}/bids`, fetcher);
+  const {
+    data: bids,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(`auction/${auction.id}/bids`, fetcher);
 
   const sortedBids = (bids as Bid[])?.sort((a, b) => b.value - a.value);
 
@@ -44,71 +43,86 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
       method: "post",
       url: process.env.NEXT_PUBLIC_BACKEND_URL + "bid/",
       headers: { Authorization: "Bearer " + session?.access_token },
-      data: { auction_id: 4, value: bidValue },
+      data: { auction_id: auction.id, value: bidValue },
     });
+    mutate();
   };
 
-  const [bidValue, setBidValue] = useState<number | undefined>(undefined);
+  const calcMinNewBidValue = () => {
+    if (!auction.min_bid_value) return 10;
+    if (!sortedBids?.length) return auction.min_bid_value;
+    return sortedBids[0].value + 10;
+  };
+
+  const minNewBidValue = calcMinNewBidValue();
+
+  console.log("minNewBidValue", minNewBidValue);
+  console.log("sortedBids", sortedBids);
+
+  const [bidValue, setBidValue] = useState<number>(minNewBidValue);
 
   // if (isLoading) return <div>Loading...</div>;
 
   // if (!data) return <div>Failed to load data</div>;
 
   return (
-    <DialogContent className="max-h-full overflow-auto sm:max-w-[425px]">
-      <DialogHeader>
-        <DialogTitle className="[text-wrap:balance]">
-          {auction.title}
-        </DialogTitle>
-        <p>
-          <span className="italic">
-            {auction.user_firstname}
-            {auction.user_lastname ? ` ${auction.user_lastname}` : ""}
-          </span>{" "}
-          • do{" "}
-          {auction.auction_end_data
-            ? new Date(auction.auction_end_data).toLocaleString("pl-PL", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              })
-            : ""}
-        </p>
-        <DialogDescription className="whitespace-pre-wrap">
-          {auction.description}
-        </DialogDescription>
-      </DialogHeader>
+    <div className="max-w-lg flex flex-col items-center gap-2">
+      <h1 className="[text-wrap:balance] font-bold text-2xl">
+        {auction.title}
+      </h1>
+      <div >
+        <span className="italic">
+          {auction.user_firstname}
+          {auction.user_lastname ? ` ${auction.user_lastname}` : ""}
+        </span>{" "}
+        • do{" "}
+        {auction.auction_end_data
+          ? new Date(auction.auction_end_data).toLocaleString("pl-PL", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })
+          : ""}
+      </div>
+
+      <div className="whitespace-pre-wrap my-2">
+        {auction.description}
+      </div>
+      
+
       {auction.min_bid_value ? (
         <p className="text-sm text-muted-foreground">
-          Cena wywoławca: {auction.min_bid_value} zł
+          Cena wywoławcza: {auction.min_bid_value} zł
         </p>
       ) : null}
 
+      <Separator />
+
       <BidsTable bids={sortedBids} numOfWinners={auction.numOfWinners} />
+
+      <Separator />
 
       {auction.user !== session?.user?.pk ? (
         <div className="flex flex-col items-center gap-2">
-          <Label htmlFor="bid">Licytuj:</Label>
+          <div className="flex items-baseline gap-2">
+          <Label htmlFor="bid">Twoja oferta:</Label>
           <div className="flex items-baseline gap-2">
             <Input
               type="number"
               id="bid"
-              placeholder="Wpisz swoją ofertę"
               value={bidValue || ""}
               onChange={(e) => setBidValue(e.target.valueAsNumber)}
-              className="pr-1 text-right"
+              className="pr-1 text-right w-28"
             />
             <span>zł</span>
-          </div>
+          </div></div>
           <Button
             onClick={() => {
               handleBid(bidValue);
             }}
             disabled={
               !bidValue ||
-              (auction.min_bid_value &&
-                bidValue < auction.min_bid_value + 10) ||
-              (bids?.length && bidValue < bids[0].value + 10) ||
+              bidValue < minNewBidValue ||
               (bids?.length && bids[0].bidder_id === session?.user?.pk)
             }
           >
@@ -116,8 +130,8 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
           </Button>
         </div>
       ) : null}
-    </DialogContent>
+    </div>
   );
 };
 
-export default AuctionModal;
+export default AuctionComponent;

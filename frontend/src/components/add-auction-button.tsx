@@ -18,7 +18,7 @@ export function AddAuctionButton() {
             className="hidden gap-2 sm:flex"
             size="default"
             title="Utwórz aukcję"
-            onClick={() => router.push("/add-auction")}
+            onClick={() => router.push("/auction/add")}
           >
             <Plus className="h-5 w-5" />
             <span>Utwórz aukcję</span>
@@ -28,7 +28,7 @@ export function AddAuctionButton() {
             className="sm:hidden"
             size="icon"
             title="Utwórz aukcję"
-            onClick={() => router.push("/add-auction")}
+            onClick={() => router.push("/auction/add")}
           >
             <Plus className="h-5 w-5" />
           </Button>

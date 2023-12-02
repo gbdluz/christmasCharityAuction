@@ -9,22 +9,22 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between px-4">
         <Link href="/">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <Image
               src="/logo-darkmode.svg"
               alt="logo"
-              width={27}
+              width={36}
               height={36}
               className="hidden dark:block"
             />
             <Image
               src="/logo-lightmode.svg"
               alt="logo"
-              width={27}
+              width={36}
               height={36}
               className="block dark:hidden"
             />
-            <h1 className="hidden font-serif text-2xl sm:block">
+            <h1 className="hidden text-lg font-medium sm:block">
               <span className="hidden md:inline">świąteczna licytacja </span>
               <span className="hidden sm:inline">postDA</span>
             </h1>

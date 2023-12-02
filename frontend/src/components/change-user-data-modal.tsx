@@ -39,38 +39,43 @@ const ChangeUserDataModal = ({
   const [lastName, setLastName] = useState(user.last_name);
 
   return (
-    <DialogContent className="max-h-full overflow-auto sm:max-w-[425px]">
+    <DialogContent
+      className="max-h-full overflow-auto sm:max-w-[425px]"
+      onOpenAutoFocus={(e) => e.preventDefault()}
+    >
       <DialogHeader>
         <DialogTitle className="[text-wrap:balance]">
-          Dane użytkownika
-        </DialogTitle>
-
-        <span className="italic">
           {user.first_name}
           {user.last_name ? ` ${user.last_name}` : ""}
-        </span>
+        </DialogTitle>
+
         <DialogDescription className="whitespace-pre-wrap">
           {/* {auction.description} */}
         </DialogDescription>
       </DialogHeader>
 
-      <div className="flex flex-col items-center gap-2">
-        <Label htmlFor="username">Nick z Discorda:</Label>
-        <Input type="text" id="username" value={user.username} disabled />
-        <Label htmlFor="first_name">Imię:</Label>
-        <Input
-          type="text"
-          id="first_name"
-          value={firstName || ""}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <Label htmlFor="last_name">Nazwisko:</Label>
-        <Input
-          type="text"
-          id="last_name"
-          value={lastName || ""}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+      <div className="flex flex-col gap-2">
+        <div>
+          Nick z Discorda: <span className="font-mono">{user.username}</span>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <Label htmlFor="first_name">Imię:</Label>
+          <Input
+            type="text"
+            id="first_name"
+            value={firstName || ""}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <Label htmlFor="last_name">Nazwisko:</Label>
+          <Input
+            type="text"
+            id="last_name"
+            value={lastName || ""}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
 
         <Button
           onClick={() => {

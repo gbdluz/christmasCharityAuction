@@ -1,6 +1,7 @@
 "use client";
 
 import ChangeUserDataModal from "@/components/change-user-data-modal";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { User } from "@/lib/types/user";
 import axios from "axios";
@@ -46,7 +47,7 @@ export default function Profile() {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild className="cursor-pointer">
-          zmień dane
+          <Button>Zmień dane</Button>
         </DialogTrigger>
         <ChangeUserDataModal user={user} onSuccess={() => setOpen(false)} />
       </Dialog>

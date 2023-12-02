@@ -34,11 +34,7 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
       })
       .then((res) => res.data);
 
-  const {
-    data: bids,
-    error,
-    isLoading,
-  } = useSWR(`auction/${18}/bids`, fetcher);
+  const { data: bids, error, isLoading } = useSWR(`auction/${4}/bids`, fetcher);
 
   const sortedBids = (bids as Bid[])?.sort((a, b) => b.value - a.value);
 
@@ -48,7 +44,7 @@ const AuctionModal = ({ auction }: { auction: AuctionWithBids }) => {
       method: "post",
       url: process.env.NEXT_PUBLIC_BACKEND_URL + "bid/",
       headers: { Authorization: "Bearer " + session?.access_token },
-      data: { auction_id: 18, value: bidValue },
+      data: { auction_id: 4, value: bidValue },
     });
   };
 

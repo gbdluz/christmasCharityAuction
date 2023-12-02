@@ -8,7 +8,7 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from src.apps.auction.models import Bid, Auction
 from src.apps.auction.serializers import EmptyAuctionSerializer, BidSerializer, AuctionSerializer, BidListSerializer, \
-    UserEditSerializer
+    UserEditSerializer, UserIdSerializer
 from src.apps.auction.consts import BID_INCREMENT
 
 
@@ -57,7 +57,7 @@ class BidViewSet(viewsets.GenericViewSet):
 
     @extend_schema(
         responses={
-            201: OpenApiResponse(response={'user_id': int}, description="Created or udpated"),
+            201: OpenApiResponse(response=UserIdSerializer, description="Created or udpated"),
             400: OpenApiResponse(description="Bid value is too low"),
             403: OpenApiResponse(description="The user cannot overbid their own bid if its the highest bid"),
             404: OpenApiResponse(description="No auction with given id")

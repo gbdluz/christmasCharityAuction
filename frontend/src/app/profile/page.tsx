@@ -34,24 +34,28 @@ export default function Profile() {
     return <div className="h-4 w-4 animate-spin bg-primary"></div>;
   }
 
-  if (session) {
-    return (
-      <div>
-        {userData ? (
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild className="cursor-pointer">
-              zmień dane
-            </DialogTrigger>
-            <ChangeUserDataModal user={user} onSuccess={() => setOpen(false)} />
-          </Dialog>
-        ) : null}
-
-        <div>
-          <span>PK: {session.user.pk}</span>
-          <span>Username: {session.user.username}</span>
-          <span>Email: {session.user.email || "Not provided"}</span>
-        </div>
-      </div>
-    );
+  if (!session) {
+    return <div>Possibly not logged in</div>;
   }
+
+  if (!userData) {
+    return <div>Nothing to show.</div>;
+  }
+
+  return (
+    <div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild className="cursor-pointer">
+          zmień dane
+        </DialogTrigger>
+        <ChangeUserDataModal user={user} onSuccess={() => setOpen(false)} />
+      </Dialog>
+
+      <div>
+        <span>PK: {session.user.pk}</span>
+        <span>Username: {session.user.username}</span>
+        <span>Email: {session.user.email || "Not provided"}</span>
+      </div>
+    </div>
+  );
 }

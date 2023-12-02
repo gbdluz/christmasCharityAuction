@@ -42,7 +42,7 @@ export function SignInButton() {
         <Button
           variant="outline"
           className="flex gap-2"
-          onClick={() => signIn(undefined, { callbackUrl: "/temp/profile" })}
+          onClick={() => signIn(undefined, { callbackUrl: "/" })}
         >
           <LogIn className="h-5 w-5" />
           <span>Zaloguj się</span>

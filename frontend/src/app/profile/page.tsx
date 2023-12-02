@@ -27,6 +27,8 @@ export default function Profile() {
 
   const user = userData as User;
 
+  console.log(userData, error, isLoading);
+
   if (status == "loading") {
     return <div className="h-4 w-4 animate-spin bg-primary"></div>;
   }

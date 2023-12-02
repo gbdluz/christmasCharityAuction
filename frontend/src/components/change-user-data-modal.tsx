@@ -26,7 +26,7 @@ const ChangeUserDataModal = ({
   const handleUserDataChange = async (firstName: string, lastName: string) => {
     await axios({
       method: "post",
-      url: process.env.NEXT_PUBLIC_BACKEND_URL + "user/change_details/",
+      url: process.env.NEXT_PUBLIC_BACKEND_URL + "user/change_details",
       headers: { Authorization: "Bearer " + session?.access_token },
       data: { first_name: firstName, last_name: lastName },
     });

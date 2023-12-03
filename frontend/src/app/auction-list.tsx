@@ -16,7 +16,7 @@ const AuctionList = () => {
       })
       .then((res) => res.data);
 
-  const { data, error, isLoading } = useSWR(`auction/list`, fetcher);
+  const { data, error, isLoading } = useSWR<Auction[]>(`auction/list`, fetcher);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -25,9 +25,11 @@ const AuctionList = () => {
   return (
     <div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data.toReversed().map((auction: Auction) => (
-          <AuctionCard key={auction.id} auction={auction} />
-        ))}
+        {data
+          .sort((a, b) => b.id - a.id)
+          .map((auction) => (
+            <AuctionCard key={auction.id} auction={auction} />
+          ))}
       </div>
     </div>
   );

@@ -16,9 +16,7 @@ const rubik = Rubik({
 export const metadata: Metadata = {
   title: "Licytacja postDA",
   description: "licytacje postDA na wyciągnięcie ręki",
-  metadataBase: new URL(
-    "https://auction-app-frontend-o3szumjd4-laminarplayer.vercel.app/",
-  ),
+  metadataBase: new URL("https://postda.vercel.app/"),
 };
 
 export default function RootLayout({

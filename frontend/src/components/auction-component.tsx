@@ -1,6 +1,6 @@
 "use client";
 
-import { Auction as AuctionComponent } from "@/lib/types/auction";
+import { Auction } from "@/lib/types/auction";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -14,8 +14,8 @@ export type Bid = {
   bidder_id: number;
 };
 
-const AuctionComponent = ({ auction }: { auction: AuctionComponent }) => {
-  const { data: session } = useSession({required:true});
+const AuctionComponent = ({ auction }: { auction: Auction }) => {
+  const { data: session } = useSession({ required: true });
 
   const fetcher = (url: string) =>
     axios
@@ -34,11 +34,11 @@ const AuctionComponent = ({ auction }: { auction: AuctionComponent }) => {
   const sortedBids = (bids as Bid[])?.sort((a, b) => b.value - a.value);
 
   return (
-    <div className="max-w-lg flex flex-col items-center gap-2">
-      <h1 className="[text-wrap:balance] font-bold text-2xl">
+    <div className="flex max-w-lg flex-col items-center gap-2">
+      <h1 className="text-2xl font-bold [text-wrap:balance]">
         {auction.title}
       </h1>
-      <div >
+      <div>
         <span className="italic">
           {auction.user_firstname}
           {auction.user_lastname ? ` ${auction.user_lastname}` : ""}
@@ -53,10 +53,8 @@ const AuctionComponent = ({ auction }: { auction: AuctionComponent }) => {
           : ""}
       </div>
 
-      <div className="whitespace-pre-wrap my-2">
-        {auction.description}
-      </div>
-      
+      <div className="my-2 whitespace-pre-wrap">{auction.description}</div>
+
       <Separator />
 
       {auction.min_bid_value ? (
@@ -65,7 +63,13 @@ const AuctionComponent = ({ auction }: { auction: AuctionComponent }) => {
         </p>
       ) : null}
 
-      <BidsSection auction={auction} bids={sortedBids} numOfWinners={auction.num_of_winners} session={session} mutate={mutate} />
+      <BidsSection
+        auction={auction}
+        bids={sortedBids}
+        numOfWinners={auction.num_of_winners}
+        session={session}
+        mutate={mutate}
+      />
     </div>
   );
 };

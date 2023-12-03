@@ -41,8 +41,7 @@ export default function Home() {
         🥖❤️
       </p>
       <p className="text-xl">
-        Jeśli macie pomysł na funkcję dla tej aplikacji, możecie zgłosić go
-        zgłosić{" "}
+        Jeśli macie pomysły na funkcję dla tej aplikacji, możecie je zgłaszać{" "}
         <a
           className="text-primary underline underline-offset-4 hover:opacity-90"
           href="https://docs.google.com/spreadsheets/d/1--VJbmBm0jpUfjtOI5xoTe6dhMpyXNLKB9u9wRiWii0/edit?usp=sharing"
@@ -53,7 +52,7 @@ export default function Home() {
       </p>
       <Separator />
       <p className="text-xl">
-        Poniżej znajdziesz listę aukcji, w których możesz wziąć udział.
+        Poniżej znajdziesz listę aukcji, w których możesz wziąć udział:
       </p>
       <AuctionList />
     </main>

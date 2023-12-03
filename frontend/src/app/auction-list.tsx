@@ -4,6 +4,7 @@ import AuctionCard from "@/components/auction-card";
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import useSWR from "swr";
 
 const AuctionList = () => {
@@ -21,6 +22,20 @@ const AuctionList = () => {
   if (isLoading) return <div>Loading...</div>;
 
   if (!data) return <div>Failed to load data</div>;
+
+  if (data.length === 0 || true)
+    return (
+      <div>
+        Ups, lista auckji jest pusta… Może chcesz{" "}
+        <Link
+          href="/auction/add"
+          className="underline underline-offset-4 hover:opacity-90"
+        >
+          dodać jakąś aukcję
+        </Link>
+        ? 😉
+      </div>
+    );
 
   return (
     <div>

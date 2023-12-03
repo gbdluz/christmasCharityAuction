@@ -41,9 +41,9 @@ export function SignInButton() {
         </>
       ) : (
         <Button
-          variant="outline"
+          variant="default"
           className="flex gap-2"
-          onClick={() => signIn(undefined, { callbackUrl: "/" })}
+          onClick={() => signIn("discord", { callbackUrl: "/" })}
           title="Zaloguj się"
         >
           <LogIn className="h-5 w-5" />

@@ -67,6 +67,7 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
       <BidsSection
         auction={auction}
         bids={sortedBids}
+        areBidsLoading={isLoading}
         numOfWinners={auction.num_of_winners}
         session={session}
         mutate={mutate}

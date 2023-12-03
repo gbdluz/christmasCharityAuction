@@ -1,13 +1,26 @@
 "use client";
 
+import { Loader } from "@/components/loader";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import AuctionList from "./auction-list";
 
 export default function Home() {
   const { data: session, status } = useSession();
-  if (status === "loading") return <div>Loading...</div>;
-  if (status === "unauthenticated") return <div>Unauthenticated</div>;
+  if (status === "loading") return <Loader />;
+  if (status === "unauthenticated")
+    return (
+      <div className="p-4 text-center">
+        <Button
+          variant="link"
+          onClick={() => signIn("discord", { callbackUrl: "/" })}
+          title="Zaloguj się"
+        >
+          <span>Zaloguj się, aby wziąć udział w licytacjach</span>
+        </Button>
+      </div>
+    );
 
   return (
     <main className="container flex flex-col items-center justify-between gap-4 p-4">

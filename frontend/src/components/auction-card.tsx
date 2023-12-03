@@ -13,7 +13,7 @@ const AuctionCard = ({ auction }: { auction: Auction }) => {
   return (
     <Link href={`/auction/${auction.id}`}>
       <Card className="h-full transition-colors hover:bg-accent">
-        <CardHeader>
+        <CardHeader className="pb-1">
           <CardTitle className="[text-wrap:balance]">{auction.title}</CardTitle>
           <p>
             <span className="italic">

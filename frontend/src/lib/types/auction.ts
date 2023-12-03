@@ -3,7 +3,7 @@ export type Auction = {
   title: string;
   description: string;
   photo: string;
-  numOfWinners: number;
+  num_of_winners: number;
   is_paid: boolean;
   is_collected: boolean;
   user: number;

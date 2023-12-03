@@ -23,10 +23,10 @@ const AuctionList = () => {
 
   if (!data) return <div>Failed to load data</div>;
 
-  if (data.length === 0 || true)
+  if (data.length === 0)
     return (
-      <div>
-        Ups, lista auckji jest pusta… Może chcesz{" "}
+      <div className="text-center">
+        Ups! Lista aukcji jest pusta… Może chcesz{" "}
         <Link
           href="/auction/add"
           className="underline underline-offset-4 hover:opacity-90"

@@ -18,7 +18,6 @@ import {
 } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Separator } from "./ui/separator";
 
 const BidsSection = ({
   auction,
@@ -72,7 +71,7 @@ const BidsSection = ({
       </CardHeader>
 
       <CardContent>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-3">
           {!bids || !bids.length ? (
             <p className="text-sm text-muted-foreground">
               Na razie nie ma licytujących
@@ -84,7 +83,6 @@ const BidsSection = ({
 
               return (
                 <>
-                  {index !== 0 ? <Separator /> : null}
                   <div className="flex w-full items-center justify-between gap-5">
                     <div
                       className={`${isWinner ? "font-bold" : "font-medium"} ${

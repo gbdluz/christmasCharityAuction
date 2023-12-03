@@ -36,7 +36,7 @@ export default function Home() {
         >
           tutaj
         </a>{" "}
-        📄👨‍💻
+        💡👨‍💻
       </p>
       <Separator />
       <p className="text-xl">

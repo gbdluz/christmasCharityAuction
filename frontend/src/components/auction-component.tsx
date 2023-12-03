@@ -34,11 +34,11 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
   const sortedBids = (bids as Bid[])?.sort((a, b) => b.value - a.value);
 
   return (
-    <div className="flex max-w-lg flex-col items-center gap-2">
-      <h1 className="text-2xl font-bold [text-wrap:balance]">
+    <div className="flex max-w-lg flex-col items-stretch gap-2">
+      <h1 className="text-center text-2xl font-bold [text-wrap:balance]">
         {auction.title}
       </h1>
-      <div>
+      <div className="text-center">
         <span className="italic">
           {auction.user_firstname}
           {auction.user_lastname ? ` ${auction.user_lastname}` : ""}
@@ -51,6 +51,8 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
               day: "numeric",
             })
           : ""}
+        <br />
+        liczba zwycięzców: {auction.num_of_winners}
       </div>
 
       <Card>

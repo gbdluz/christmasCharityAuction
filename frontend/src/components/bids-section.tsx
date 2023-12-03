@@ -107,9 +107,9 @@ const BidsSection = ({
         </div>
       </CardContent>
 
-      <CardFooter className="border-t pt-3">
-        {auction.user !== session?.user?.pk ? (
-          <div className="flex flex-col items-stretch gap-2">
+      {auction.user !== session?.user?.pk ? (
+        <CardFooter className="border-t pt-3">
+          <div className="flex w-full flex-col items-center gap-2">
             <div className="flex items-baseline gap-2">
               <Label htmlFor="bid">Twoja oferta:</Label>
               <div className="flex items-baseline gap-2">
@@ -136,8 +136,8 @@ const BidsSection = ({
               Licytuj
             </Button>
           </div>
-        ) : null}
-      </CardFooter>
+        </CardFooter>
+      ) : null}
     </Card>
   );
 };

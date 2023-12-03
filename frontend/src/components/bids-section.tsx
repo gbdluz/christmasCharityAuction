@@ -8,6 +8,14 @@ import { KeyedMutator } from "swr";
 import { Bid } from "./auction-component";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
@@ -47,70 +55,90 @@ const BidsSection = ({
   const [bidValue, setBidValue] = useState<number>(minNewBidValue);
 
   return (
-    <div>
-      <div className="flex flex-col items-center gap-1">
-        {!bids || !bids.length ? (
-          <p className="text-sm text-muted-foreground">
-            Na razie nie ma licytujących
-          </p>
-        ) : (
-          (bids ? bids : []).map((bid, index) => {
-            const isWinner = index < numOfWinners;
-            const isUser = bid.bidder_id === session?.user?.pk;
+    <Card>
+      <CardHeader>
+        <CardTitle>Oferty</CardTitle>
+        <CardDescription>
+          {auction.min_bid_value ? (
+            <span className="text-sm text-muted-foreground">
+              Cena wywoławcza: {auction.min_bid_value} zł
+            </span>
+          ) : (
+            <span className="text-sm text-muted-foreground">
+              Brak ceny wywoławczej
+            </span>
+          )}
+        </CardDescription>
+      </CardHeader>
 
-            return (
-              <>
-                {index !== 0 ? <Separator /> : null}
-                <div className="flex w-full items-center justify-between gap-5">
-                  <div
-                    className={`${isWinner ? "font-bold" : "font-medium"} ${
-                      isUser ? "underline" : ""
-                    }`}
-                  >
-                    {bid.bidder_firstname} {bid.bidder_lastname}
+      <CardContent>
+        <div className="flex flex-col items-center gap-1">
+          {!bids || !bids.length ? (
+            <p className="text-sm text-muted-foreground">
+              Na razie nie ma licytujących
+            </p>
+          ) : (
+            (bids ? bids : []).map((bid, index) => {
+              const isWinner = index < numOfWinners;
+              const isUser = bid.bidder_id === session?.user?.pk;
+
+              return (
+                <>
+                  {index !== 0 ? <Separator /> : null}
+                  <div className="flex w-full items-center justify-between gap-5">
+                    <div
+                      className={`${isWinner ? "font-bold" : "font-medium"} ${
+                        isUser ? "underline" : ""
+                      }`}
+                    >
+                      {bid.bidder_firstname} {bid.bidder_lastname}
+                    </div>
+                    <Badge
+                      variant={isWinner ? "default" : "outline"}
+                      className="whitespace-nowrap"
+                    >
+                      {bid.value.toLocaleString("pl")} zł
+                    </Badge>
                   </div>
-                  <Badge
-                    variant={isWinner ? "default" : "outline"}
-                    className="whitespace-nowrap"
-                  >
-                    {bid.value.toLocaleString("pl")} zł
-                  </Badge>
-                </div>
-              </>
-            );
-          })
-        )}
-      </div>
-      {auction.user !== session?.user?.pk ? (
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex items-baseline gap-2">
-            <Label htmlFor="bid">Twoja oferta:</Label>
-            <div className="flex items-baseline gap-2">
-              <Input
-                type="number"
-                id="bid"
-                value={bidValue || ""}
-                onChange={(e) => setBidValue(e.target.valueAsNumber)}
-                className="w-28 pr-1 text-right"
-              />
-              <span>zł</span>
-            </div>
-          </div>
-          <Button
-            onClick={() => {
-              handleBid(bidValue);
-            }}
-            disabled={
-              !bidValue ||
-              bidValue < minNewBidValue ||
-              (bids?.length > 0 && bids[0].bidder_id === session?.user?.pk)
-            }
-          >
-            Licytuj
-          </Button>
+                </>
+              );
+            })
+          )}
         </div>
-      ) : null}
-    </div>
+      </CardContent>
+
+      <CardFooter className="border-t pt-3">
+        {auction.user !== session?.user?.pk ? (
+          <div className="flex flex-col items-stretch gap-2">
+            <div className="flex items-baseline gap-2">
+              <Label htmlFor="bid">Twoja oferta:</Label>
+              <div className="flex items-baseline gap-2">
+                <Input
+                  type="number"
+                  id="bid"
+                  value={bidValue || ""}
+                  onChange={(e) => setBidValue(e.target.valueAsNumber)}
+                  className="w-28 pr-1 text-right"
+                />
+                <span>zł</span>
+              </div>
+            </div>
+            <Button
+              onClick={() => {
+                handleBid(bidValue);
+              }}
+              disabled={
+                !bidValue ||
+                bidValue < minNewBidValue ||
+                (bids?.length > 0 && bids[0].bidder_id === session?.user?.pk)
+              }
+            >
+              Licytuj
+            </Button>
+          </div>
+        ) : null}
+      </CardFooter>
+    </Card>
   );
 };
 

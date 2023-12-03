@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import BidsSection from "./bids-section";
-import { Separator } from "./ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export type Bid = {
   value: number;
@@ -53,15 +53,14 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
           : ""}
       </div>
 
-      <div className="my-2 whitespace-pre-wrap">{auction.description}</div>
-
-      <Separator />
-
-      {auction.min_bid_value ? (
-        <p className="text-sm text-muted-foreground">
-          Cena wywoławcza: {auction.min_bid_value} zł
-        </p>
-      ) : null}
+      <Card>
+        <CardHeader>
+          <CardTitle>Opis</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="whitespace-pre-wrap">{auction.description}</div>
+        </CardContent>
+      </Card>
 
       <BidsSection
         auction={auction}

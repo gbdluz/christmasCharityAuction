@@ -14,8 +14,8 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "Licytacja postDA",
-  description: "licytacje postDA na wyciągnięcie ręki",
+  title: "postDA Freta 🎄 licytacja świąteczna",
+  description: "Charytatywna licytacja świąteczna postDA Freta, grudzień 2023",
   metadataBase: new URL("https://postda.vercel.app/"),
 };
 

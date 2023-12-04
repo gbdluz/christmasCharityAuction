@@ -2,6 +2,7 @@
 
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
+import { min } from "date-fns";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { KeyedMutator } from "swr";
@@ -46,11 +47,11 @@ const BidsSection = ({
     mutate();
   };
 
-  const minNewBidValue = !auction.min_bid_value
-    ? 10
-    : !bids?.length
+  const minNewBidValue = auction.top_bid_value
+    ? auction.top_bid_value + 10
+    : auction.min_bid_value
     ? auction.min_bid_value
-    : bids[0].value + 10;
+    : 10;
 
   const [bidValue, setBidValue] = useState<number>(minNewBidValue);
 

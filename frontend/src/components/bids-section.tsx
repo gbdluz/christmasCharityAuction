@@ -91,9 +91,9 @@ const BidsSection = ({
                     <>
                       <div className="flex w-full items-center justify-between gap-5">
                         <div
-                          className={`${isUser ? "font-bold" : "font-normal"} ${
-                            isWinner ? "underline" : ""
-                          }`}
+                          className={`${
+                            isWinner ? "font-bold" : "font-normal"
+                          } ${isUser ? "underline" : ""}`}
                         >
                           {bid.bidder_firstname} {bid.bidder_lastname}
                         </div>

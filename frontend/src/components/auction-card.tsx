@@ -1,5 +1,6 @@
 import { Auction } from "@/lib/types/auction";
 import Link from "next/link";
+import BidComponent from "./bid-component";
 import {
   Card,
   CardContent,
@@ -12,8 +13,8 @@ import {
 const AuctionCard = ({ auction }: { auction: Auction }) => {
   return (
     <Link href={`/auction/${auction.id}`}>
-      <Card className="h-full transition-colors hover:bg-accent">
-        <CardHeader className="pb-1">
+      <Card className="grid h-full transition-colors hover:bg-accent">
+        <CardHeader className="pb-2">
           <CardTitle className="[text-wrap:balance]">{auction.title}</CardTitle>
           <p>
             <span className="italic">
@@ -30,12 +31,38 @@ const AuctionCard = ({ auction }: { auction: Auction }) => {
               : ""}
           </p>
         </CardHeader>
-        <CardContent>
-          <CardDescription className="line-clamp-3 whitespace-pre-wrap">
+        <CardContent className="pb-3">
+          <CardDescription className="line-clamp-2 whitespace-pre-wrap">
             {auction.description}
           </CardDescription>
         </CardContent>
-        {/* <CardFooter></CardFooter> */}
+        <CardFooter className="flex justify-between self-end pb-4">
+          {auction.top_bidder_firstname && auction.top_bid_value ? (
+            <BidComponent
+              bid={{
+                bidder_firstname: `🥇 ${auction.top_bidder_firstname}`,
+                bidder_lastname: auction.top_bidder_lastname
+                  ? auction.top_bidder_lastname
+                  : "",
+                value: auction.top_bid_value,
+                bidder_id: 0, // ask G to add this to the API
+              }}
+              isWinner={true}
+              isUser={false}
+            />
+          ) : (
+            <BidComponent
+              bid={{
+                bidder_firstname: "Cena wywoławcza:",
+                bidder_lastname: "",
+                value: auction.min_bid_value ? auction.min_bid_value : 10,
+                bidder_id: 0,
+              }}
+              isWinner={false}
+              isUser={false}
+            />
+          )}
+        </CardFooter>
       </Card>
     </Link>
   );

@@ -7,8 +7,8 @@ import { Session } from "next-auth";
 import { useState } from "react";
 import { KeyedMutator } from "swr";
 import { Bid } from "./auction-component";
+import BidComponent from "./bid-component";
 import { Loader } from "./loader";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -88,23 +88,12 @@ const BidsSection = ({
                   const isUser = bid.bidder_id === session?.user?.pk;
 
                   return (
-                    <>
-                      <div className="flex w-full items-center justify-between gap-5">
-                        <div
-                          className={`${
-                            isWinner ? "font-bold" : "font-normal"
-                          } ${isUser ? "underline" : ""}`}
-                        >
-                          {bid.bidder_firstname} {bid.bidder_lastname}
-                        </div>
-                        <Badge
-                          variant={isWinner ? "default" : "outline"}
-                          className="whitespace-nowrap"
-                        >
-                          {bid.value.toLocaleString("pl")} zł
-                        </Badge>
-                      </div>
-                    </>
+                    <BidComponent
+                      bid={bid}
+                      isWinner={isWinner}
+                      isUser={isUser}
+                      key={index}
+                    />
                   );
                 })
               )}

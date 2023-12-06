@@ -2,8 +2,8 @@
 
 import { useAuctions } from "@/app/swr/use-auctions";
 import AuctionComponent from "@/components/auction-component";
+import { Loader } from "@/components/loader";
 import { Auction } from "@/lib/types/auction";
-import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 export default function AuctionPage({ params }: { params: { id: string } }) {
@@ -19,12 +19,7 @@ export default function AuctionPage({ params }: { params: { id: string } }) {
     auctions2 &&
     auctions2.find((auction) => auction.id === parseInt(params.id));
 
-  if (status === "loading" || isLoading)
-    return (
-      <main className="flex flex-col items-center">
-        <Loader2 className="h-5 w-5 animate-spin" />
-      </main>
-    );
+  if (status === "loading" || isLoading) return <Loader />;
 
   return (
     <main className="container flex flex-col items-center justify-between gap-4 p-4">

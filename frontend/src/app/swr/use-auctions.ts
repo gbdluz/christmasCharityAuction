@@ -9,7 +9,7 @@ export function useAuctions(accessToken: string) {
       })
       .then((res) => res.data);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate, isValidating } = useSWR(
     [`auction/list`, accessToken],
     fetcher,
   );
@@ -18,5 +18,7 @@ export function useAuctions(accessToken: string) {
     auctions: data,
     isLoading,
     isError: error,
+    mutate,
+    isValidating,
   };
 }

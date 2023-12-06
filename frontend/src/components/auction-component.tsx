@@ -3,7 +3,6 @@
 import { useAuctions } from "@/app/swr/use-auctions";
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
-import { set } from "date-fns";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";

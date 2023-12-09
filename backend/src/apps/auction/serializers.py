@@ -38,7 +38,7 @@ class AuctionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Auction
-        fields = ['id', 'title', 'user', 'user_firstname', 'user_lastname', 'description', 'photo', 'num_of_winners',
+        fields = ['id', 'title', 'user', 'user_firstname', 'user_lastname', 'description', 'photo_url', 'num_of_winners',
                   'deadline', 'min_bid_value', 'auction_end_data', 'is_paid', 'is_collected', 'top_bid_value',
                   'top_bidder_firstname', 'top_bidder_lastname']
 

@@ -19,22 +19,26 @@ class AuctionSerializer(serializers.ModelSerializer):
         return auction.bid_set.all().order_by('-value').first() if len(auction.bid_set.all()) > 0 else None
 
     def get_top_bid_value(self, auction: Auction):
-        return getattr(self.get_top_bid(auction), 'value', None)
+        top_bid = self.get_top_bid(auction)
+        return top_bid.value if top_bid else None
 
     def get_top_bidder(self, auction: Auction):
-        return getattr(self.get_top_bid(auction), 'user', None)
+        top_bid = self.get_top_bid(auction)
+        return top_bid.user if top_bid else None
 
     def get_top_bidder_firstname(self, auction: Auction):
-        return getattr(self.get_top_bidder(auction), 'first_name', None)
+        top_bidder = self.get_top_bidder(auction)
+        return top_bidder.first_name if top_bidder else None
 
     def get_top_bidder_lastname(self, auction: Auction):
-        return getattr(self.get_top_bidder(auction), 'last_name', None)
+        top_bidder = self.get_top_bidder(auction)
+        return top_bidder.last_name if top_bidder else None
 
     def get_auction_owner_firstname(self, auction: Auction):
-        return getattr(auction.user, 'first_name', None)
+        return auction.user.first_name if auction.user else None
 
     def get_auction_owner_lastname(self, auction: Auction):
-        return getattr(auction.user, 'last_name', None)
+        return auction.user.last_name if auction.user else None
 
     class Meta:
         model = Auction

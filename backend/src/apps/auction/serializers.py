@@ -71,5 +71,21 @@ class UserEditSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=50)
     last_name = serializers.CharField(max_length=50)
 
+
 class UserIdSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
+
+
+class UserBidAuctionsSerializer(serializers.ModelSerializer):
+    auction_id = serializers.SerializerMethodField('get_auction_id')
+    auction_top_bid = serializers.SerializerMethodField('get_auction_top_bid')
+
+    def get_auction_id(self, Bid):
+        return Bid.auction.id
+
+    def get_auction_top_bid(self, Bid):
+        return Bid.auction.bid_set.all().order_by('-value').first().value
+
+    class Meta:
+        model = Bid
+        fields = ['auction_id', 'value', 'auction_top_bid']

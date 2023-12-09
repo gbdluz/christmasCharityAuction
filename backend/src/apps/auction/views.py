@@ -8,7 +8,7 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from src.apps.auction.models import Bid, Auction
 from src.apps.auction.serializers import EmptyAuctionSerializer, BidSerializer, AuctionSerializer, BidListSerializer, \
-    UserEditSerializer, UserIdSerializer
+    UserEditSerializer, UserIdSerializer, UserBidAuctionsSerializer
 from src.apps.auction.consts import BID_INCREMENT
 
 
@@ -109,3 +109,12 @@ class UserEditView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+class UserBidAuctionsView(APIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = UserBidAuctionsSerializer
+
+    def get(self, request):
+        user_bid_auctions = Bid.objects.filter(user=request.user)
+        serializer = self.serializer_class(data=user_bid_auctions, many=True)
+        serializer.is_valid()
+        return Response(status=status.HTTP_200_OK, data=serializer.data)

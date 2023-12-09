@@ -9,7 +9,7 @@ class Auction(models.Model):
     title = models.CharField(max_length=200)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
-    photo = models.ImageField(blank=True, null=True)
+    photo_url = models.CharField(blank=True, null=True, max_length=200)
     num_of_winners = models.IntegerField(default=1)
     deadline = models.DateField(blank=True, null=True)
     min_bid_value = models.IntegerField(blank=True, null=True)

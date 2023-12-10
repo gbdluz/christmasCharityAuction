@@ -34,8 +34,22 @@ class AuctionViewSet(
 
     @action(url_path='list', detail=False)
     def get_all_auctions(self, request):
-        data = Auction.objects.all()
-        serializer = AuctionSerializer(data=data, many=True)
+        auctions = Auction.objects.all()
+        bids = Bid.objects.all()
+        results_data = []
+        for auction in auctions:
+            result = auction.__dict__
+            auction_owner = auction.user
+            result['user_firstname'] = auction_owner.first_name
+            result['user_lastname'] = auction_owner.last_name
+            top_bid = bids.filter(auction=auction).order_by('-value').first()
+            top_bidder = top_bid.user
+            result['top_bid_value'] = top_bid.value
+            result['top_bidder_firstname'] = top_bidder.first_name
+            result['top_bidder_lastname'] = top_bidder.last_name
+            results_data.append(result)
+
+        serializer = AuctionSerializer(data=results_data, many=True)
         serializer.is_valid()
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 

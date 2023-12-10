@@ -6,6 +6,7 @@ export type Auction = {
   user_lastname: string;
   description: string;
   // photo: null;
+  photo_url: string;
   num_of_winners: number;
   deadline?: Date;
   min_bid_value?: number;

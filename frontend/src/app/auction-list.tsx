@@ -1,6 +1,7 @@
 "use client";
 
 import AuctionCard from "@/components/auction-card";
+import { Loader } from "@/components/loader";
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -19,7 +20,7 @@ const AuctionList = () => {
 
   const { data, error, isLoading } = useSWR<Auction[]>(`auction/list`, fetcher);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
 
   if (!data) return <div>Failed to load data</div>;
 

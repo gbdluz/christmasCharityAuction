@@ -1,13 +1,17 @@
 "use client";
 
 import { useAuctions } from "@/app/swr/use-auctions";
+import { isValidUrl } from "@/lib/is-valid-url";
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import useSWR from "swr";
 import BidsSection from "./bids-section";
+import ImageUploader from "./image-uploader";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -26,6 +30,7 @@ export type Bid = {
 
 const AuctionComponent = ({ auction }: { auction: Auction }) => {
   const { data: session } = useSession({ required: true });
+  const router = useRouter();
 
   const fetcher = (url: string) =>
     axios
@@ -49,10 +54,28 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
   const [initialEditHeight, setInitialEditHeight] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
   const [description, setDescription] = useState(auction.description);
+  const isUserCreator = session?.user?.pk === auction.user;
+  const [imageEditMode, setImageEditMode] = useState(
+    !isValidUrl(auction.photo_url) && isUserCreator,
+  );
+
+  const onImageUploadSuccess = async (url: string) => {
+    setImageEditMode(false);
+    await axios({
+      method: "patch",
+      url: process.env.NEXT_PUBLIC_BACKEND_URL + `auction/${auction.id}/`,
+      headers: {
+        Authorization: "Bearer " + session?.access_token,
+      },
+      data: {
+        photo_url: url,
+      },
+    });
+    console.log("mutate");
+    mutateAuctions();
+  };
 
   const sortedBids = (bids as Bid[])?.sort((a, b) => b.value - a.value);
-
-  const isUserCreator = session?.user?.pk === auction.user;
 
   return (
     <div className="flex w-full max-w-lg flex-col items-stretch gap-2">
@@ -76,6 +99,36 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
         liczba zwycięzców: {auction.num_of_winners}
       </div>
 
+      {imageEditMode ? (
+        <ImageUploader onImageUploadSuccess={onImageUploadSuccess} />
+      ) : (
+        isValidUrl(auction.photo_url) && (
+          <Card className="relative aspect-video min-h-[4rem] overflow-hidden">
+            <Image
+              className="object-cover"
+              src={auction.photo_url}
+              alt={auction.title}
+              fill={true}
+            />
+            {isUserCreator && (
+              <div className="absolute bottom-0 flex w-full justify-between p-3 py-3">
+                <Button
+                  variant="outline"
+                  className="flex w-full gap-2"
+                  size={"sm"}
+                  onClick={() => {
+                    setImageEditMode(!imageEditMode);
+                  }}
+                >
+                  <Pencil className="h-4 w-4" />
+                  <span>{"Zamień"}</span>
+                </Button>
+              </div>
+            )}
+          </Card>
+        )
+      )}
+
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0 pt-5">
           <CardTitle>Opis</CardTitle>
@@ -83,9 +136,9 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
         <CardContent>
           {isEditMode ? (
             <textarea
-              className="mb-[-7px] w-full whitespace-pre-wrap"
+              className="mb-[-7px] w-full whitespace-pre-wrap "
               autoFocus
-              style={{ height: initialEditHeight }}
+              style={{ height: initialEditHeight, minHeight: "3em" }}
               onChange={(e) => {
                 setDescription(e.currentTarget.value);
               }}

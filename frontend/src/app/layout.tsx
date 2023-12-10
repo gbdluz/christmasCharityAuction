@@ -1,6 +1,7 @@
 import Navbar from "@/app/navbar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
@@ -35,9 +36,11 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Navbar />
-              <main>{children}</main>
-              <Toaster />
+              <EdgeStoreProvider>
+                <Navbar />
+                <main>{children}</main>
+                <Toaster />
+              </EdgeStoreProvider>
             </ThemeProvider>
           </NextAuthProvider>
         </div>

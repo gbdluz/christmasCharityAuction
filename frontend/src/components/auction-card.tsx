@@ -1,4 +1,7 @@
+import { isValidUrl } from "@/lib/is-valid-url";
 import { Auction } from "@/lib/types/auction";
+import { ImageIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import BidComponent from "./bid-component";
 import {
@@ -13,7 +16,21 @@ import {
 const AuctionCard = ({ auction }: { auction: Auction }) => {
   return (
     <Link href={`/auction/${auction.id}`}>
-      <Card className="grid h-full transition-colors hover:bg-accent">
+      <Card className="relative grid h-full grid-cols-1 overflow-hidden transition-colors hover:bg-accent">
+        <div className="relative aspect-video w-full">
+          {isValidUrl(auction.photo_url) ? (
+            <Image
+              className="object-cover"
+              src={auction.photo_url}
+              alt={auction.title}
+              fill={true}
+            />
+          ) : (
+            <div className="grid h-full w-full place-items-center bg-primary-foreground/50 object-cover">
+              <ImageIcon className="h-8 w-8" />
+            </div>
+          )}
+        </div>
         <CardHeader className="pb-2">
           <CardTitle className="[text-wrap:balance]">{auction.title}</CardTitle>
           <p>

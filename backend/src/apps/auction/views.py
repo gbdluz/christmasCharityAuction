@@ -41,6 +41,7 @@ class AuctionViewSet(
         for auction in auctions:
             result = auction.__dict__
             auction_owner = auction.user
+            result['user'] = auction_owner.id if auction_owner else None
             result['user_firstname'] = auction_owner.first_name if auction_owner else None
             result['user_lastname'] = auction_owner.last_name if auction_owner else None
             top_bid = bids.filter(auction=auction).order_by('-value').first()

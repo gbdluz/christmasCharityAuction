@@ -20,6 +20,7 @@ class AuctionSerializer(serializers.Serializer):
     auction_end_data = serializers.DateField(allow_null=True)
     is_paid = serializers.BooleanField(default=False)
     is_collected = serializers.BooleanField(default=False)
+    num_of_winners = serializers.IntegerField(allow_null=True)
     top_bid_value = serializers.IntegerField(allow_null=True)
     top_bidder_firstname = serializers.CharField(allow_null=True)
     top_bidder_lastname = serializers.CharField(allow_null=True)

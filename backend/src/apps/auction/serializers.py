@@ -9,6 +9,7 @@ class EmptyAuctionSerializer(serializers.ModelSerializer):
 
 
 class AuctionSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     title = serializers.CharField(max_length=200)
     user_firstname = serializers.CharField(max_length=200)
     user_lastname = serializers.CharField(max_length=200)

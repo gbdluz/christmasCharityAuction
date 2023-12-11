@@ -15,6 +15,7 @@ from src.apps.auction.consts import BID_INCREMENT
 class AuctionViewSet(
     viewsets.GenericViewSet,
     mixins.UpdateModelMixin,
+    mixins.RetrieveModelMixin
 ):
     permission_classes = (IsAuthenticated,)
     serializer_class = EmptyAuctionSerializer
@@ -34,19 +35,19 @@ class AuctionViewSet(
 
     @action(url_path='list', detail=False)
     def get_all_auctions(self, request):
-        auctions = Auction.objects.all()
+        auctions = Auction.objects.all().order_by('-id')
         bids = Bid.objects.all()
         results_data = []
         for auction in auctions:
             result = auction.__dict__
             auction_owner = auction.user
-            result['user_firstname'] = auction_owner.first_name
-            result['user_lastname'] = auction_owner.last_name
+            result['user_firstname'] = auction_owner.first_name if auction_owner else None
+            result['user_lastname'] = auction_owner.last_name if auction_owner else None
             top_bid = bids.filter(auction=auction).order_by('-value').first()
-            top_bidder = top_bid.user
-            result['top_bid_value'] = top_bid.value
-            result['top_bidder_firstname'] = top_bidder.first_name
-            result['top_bidder_lastname'] = top_bidder.last_name
+            top_bidder = top_bid.user if top_bid else None 
+            result['top_bid_value'] = top_bid.value if top_bid else None
+            result['top_bidder_firstname'] = top_bidder.first_name if top_bidder else None
+            result['top_bidder_lastname'] = top_bidder.last_name if top_bidder else None
             results_data.append(result)
 
         serializer = AuctionSerializer(data=results_data, many=True)

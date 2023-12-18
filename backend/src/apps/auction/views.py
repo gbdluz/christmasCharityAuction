@@ -2,9 +2,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse
+from datetime import datetime, timezone
 
 from src.apps.auction.models import Bid, Auction
 from src.apps.auction.serializers import EmptyAuctionSerializer, BidSerializer, AuctionSerializer, BidListSerializer, \
@@ -12,12 +13,18 @@ from src.apps.auction.serializers import EmptyAuctionSerializer, BidSerializer, 
 from src.apps.auction.consts import BID_INCREMENT
 
 
+class DeadlinePermissions(BasePermission):
+    def has_permission(self, request, *args, **kwargs):
+        deadline = datetime(2023, 12, 21, 22, tzinfo=timezone.utc)
+        return request.user and datetime.now(timezone.utc) < deadline
+
+
 class AuctionViewSet(
     viewsets.GenericViewSet,
     mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin
 ):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (DeadlinePermissions,)
     serializer_class = EmptyAuctionSerializer
 
     def get_queryset(self):
@@ -64,7 +71,7 @@ class AuctionViewSet(
 
 
 class BidViewSet(viewsets.GenericViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (DeadlinePermissions,)
     serializer_class = BidSerializer
 
     def get_queryset(self):
@@ -111,7 +118,7 @@ class BidViewSet(viewsets.GenericViewSet):
 
 
 class UserEditView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (DeadlinePermissions,)
     serializer_class = UserEditSerializer
 
 
@@ -125,12 +132,34 @@ class UserEditView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class UserBidAuctionsView(APIView):
-    permission_classes = (IsAuthenticated, )
+class UserBidAuctionsViewSet(viewsets.GenericViewSet):
+    permission_classes = (DeadlinePermissions, )
     serializer_class = UserBidAuctionsSerializer
 
-    def get(self, request):
-        user_bid_auctions = Bid.objects.filter(user=request.user)
-        serializer = self.serializer_class(data=user_bid_auctions, many=True)
+    @action(url_path="all", detail=False, methods=["get"])
+    def get_all_auctions(self, request):
+        user_bid_auctions = Auction.objects.filter(bid__user=request.user)
+        auction_ids = user_bid_auctions.values_list('id', flat=True)
+
+        serializer = self.serializer_class(data={'auctions': auction_ids})
         serializer.is_valid()
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @action(url_path="winning", detail=False, methods=["get"])
+    def get(self, request):
+        user_bid_auctions = Auction.objects.filter(bid__user=request.user)
+        bids_in_bid_auctions = Bid.objects.filter(auction__in=user_bid_auctions)
+
+        winning_auctions = []
+        for auction in user_bid_auctions:
+            auction_bids = bids_in_bid_auctions.filter(auction=auction).order_by("-value")
+            bids_user_ids = list(auction_bids.values_list("user__id", flat=True))
+            bid_user_position = bids_user_ids.index(request.user.id)
+
+            if bid_user_position < auction.num_of_winners:
+                winning_auctions.append(auction.id)
+
+        serializer = self.serializer_class(data={'auctions': winning_auctions})
+        serializer.is_valid()
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+

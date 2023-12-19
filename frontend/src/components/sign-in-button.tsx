@@ -23,7 +23,7 @@ export function SignInButton() {
         <>
           <Button
             variant="outline"
-            onClick={() => router.push("/temp/profile")}
+            onClick={() => router.push("/profile")}
             size={"icon"}
             title="Profil"
           >
@@ -33,6 +33,7 @@ export function SignInButton() {
             variant="outline"
             className="flex gap-2"
             onClick={() => signOut({ callbackUrl: "/" })}
+            title="Wyloguj się"
           >
             <span>Wyloguj się</span>
             <LogOut className="h-5 w-5" />
@@ -40,9 +41,10 @@ export function SignInButton() {
         </>
       ) : (
         <Button
-          variant="outline"
+          variant="default"
           className="flex gap-2"
-          onClick={() => signIn(undefined, { callbackUrl: "/temp/profile" })}
+          onClick={() => signIn("discord", { callbackUrl: "/" })}
+          title="Zaloguj się"
         >
           <LogIn className="h-5 w-5" />
           <span>Zaloguj się</span>

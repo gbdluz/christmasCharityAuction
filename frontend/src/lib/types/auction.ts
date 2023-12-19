@@ -1,16 +1,21 @@
 export type Auction = {
   id: number;
   title: string;
-  description: string;
-  photo: string;
-  numOfWinners: number;
-  is_paid: boolean;
-  is_collected: boolean;
   user: number;
-
+  user_firstname: string;
+  user_lastname: string;
+  description: string;
+  // photo: null;
+  photo_url: string;
+  num_of_winners: number;
+  deadline?: Date;
   min_bid_value?: number;
   auction_end_data?: Date;
-  deadline?: Date;
+  is_paid: boolean; // not used I guess
+  is_collected: boolean; // not used I guess
+  top_bid_value?: number;
+  top_bidder_firstname?: string;
+  top_bidder_lastname?: string;
 };
 
 export type AuctionWithBids = Auction & {

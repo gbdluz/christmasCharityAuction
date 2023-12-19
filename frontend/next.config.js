@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "picsum.photos", // todo: to remove after test
+        hostname: "files.edgestore.dev",
         port: "",
         pathname: "/**",
       },

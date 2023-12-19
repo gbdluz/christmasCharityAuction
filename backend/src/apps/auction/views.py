@@ -15,6 +15,8 @@ from src.apps.auction.consts import BID_INCREMENT
 
 class DeadlinePermissions(BasePermission):
     def has_permission(self, request, *args, **kwargs):
+        if request.method == "GET":
+            return request.user
         deadline = datetime(2023, 12, 21, 22, tzinfo=timezone.utc)
         return request.user and datetime.now(timezone.utc) < deadline
 
@@ -68,11 +70,10 @@ class AuctionViewSet(
         bids = Bid.objects.all()
         total_winning_sum = 0
         for auction in auctions:
-            auction_bid_values = list(bids.filter(auction=auction).values_list("value"))
-            print(auction_bid_values)
+            auction_bid_values = list(bids.filter(auction=auction).values_list("value", flat=True))
             auction_bid_values.sort(reverse=True)
-            total_winning_sum += sum(auction_bid_values[:min(auction.num_of_winners, len(auction_bid_values)])
-        return total_winning_sum
+            total_winning_sum += sum(auction_bid_values[:min(auction.num_of_winners, len(auction_bid_values))])
+        return Response(status=status.HTTP_200_OK, data={"sum": total_winning_sum})
 
     @action(url_path='bids', detail=True)
     def get_all_bids(self, request, pk: int):

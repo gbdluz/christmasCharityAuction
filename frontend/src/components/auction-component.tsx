@@ -71,7 +71,6 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
         photo_url: url,
       },
     });
-    console.log("mutate");
     mutateAuctions();
   };
 

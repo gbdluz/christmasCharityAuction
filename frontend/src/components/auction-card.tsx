@@ -16,7 +16,7 @@ import {
 const AuctionCard = ({ auction }: { auction: Auction }) => {
   return (
     <Link href={`/auction/${auction.id}`}>
-      <Card className="relative grid h-full grid-cols-1 overflow-hidden transition-colors hover:bg-accent">
+      <Card className="relative grid h-full grid-cols-1 overflow-hidden transition-colors hover:bg-accent ">
         <div className="relative aspect-video w-full">
           {isValidUrl(auction.photo_url) ? (
             <Image

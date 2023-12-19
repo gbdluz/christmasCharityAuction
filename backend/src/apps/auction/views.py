@@ -62,6 +62,18 @@ class AuctionViewSet(
         serializer.is_valid()
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
+    @action(url_path='sum_of_winning_bids', detail=False, methods=["get"])
+    def get_sum_of_wining_bids(self, request):
+        auctions = Auction.objects.all()
+        bids = Bid.objects.all()
+        total_winning_sum = 0
+        for auction in auctions:
+            auction_bid_values = list(bids.filter(auction=auction).values_list("value"))
+            print(auction_bid_values)
+            auction_bid_values.sort(reverse=True)
+            total_winning_sum += sum(auction_bid_values[:min(auction.num_of_winners, len(auction_bid_values)])
+        return total_winning_sum
+
     @action(url_path='bids', detail=True)
     def get_all_bids(self, request, pk: int):
         auction = Auction.objects.get(pk=pk)

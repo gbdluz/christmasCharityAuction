@@ -51,9 +51,6 @@ export default function Home() {
         💡👨‍💻
       </p>
       <Separator />
-      <p className="text-xl">
-        Poniżej znajdziesz listę aukcji, w których możesz wziąć udział:
-      </p>
       <AuctionList />
     </main>
   );

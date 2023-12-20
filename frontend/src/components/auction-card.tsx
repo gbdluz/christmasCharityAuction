@@ -1,5 +1,6 @@
 import { isValidUrl } from "@/lib/is-valid-url";
 import { Auction } from "@/lib/types/auction";
+import Linkify from "linkify-react";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -50,7 +51,17 @@ const AuctionCard = ({ auction }: { auction: Auction }) => {
         </CardHeader>
         <CardContent className="pb-3">
           <CardDescription className="line-clamp-2 whitespace-pre-wrap">
-            {auction.description}
+            <Linkify
+              as="div"
+              className="whitespace-pre-wrap"
+              options={{
+                defaultProtocol: "https",
+                className: "underline break-all",
+                tagName: "span",
+              }}
+            >
+              {auction.description}
+            </Linkify>
           </CardDescription>
         </CardContent>
         <CardFooter className="flex justify-between self-end pb-4">

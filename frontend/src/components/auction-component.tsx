@@ -4,6 +4,7 @@ import { useAuctions } from "@/app/swr/use-auctions";
 import { isValidUrl } from "@/lib/is-valid-url";
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
+import Linkify from "linkify-react";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -144,8 +145,17 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
               value={description}
             ></textarea>
           ) : (
-            <div className="whitespace-pre-wrap" ref={ref}>
-              {isValidating ? description : auction.description}
+            <div ref={ref}>
+              <Linkify
+                as="div"
+                className="whitespace-pre-wrap"
+                options={{
+                  defaultProtocol: "https",
+                  className: "text-blue-500 underline break-all",
+                }}
+              >
+                {isValidating ? description : auction.description}
+              </Linkify>
             </div>
           )}
         </CardContent>

@@ -77,9 +77,21 @@ const AuctionList = () => {
               return true;
             }
           })
-          .map((auction) => (
-            <AuctionCard key={auction.id} auction={auction} />
-          ))}
+          .map((auction) => {
+            return (
+              <AuctionCard
+                key={auction.id}
+                auction={auction}
+                isBidding={
+                  !!biddingAuctions?.auctions.find((a) => a === auction.id)
+                }
+                isWinning={
+                  !!winningAuctions?.auctions.find((a) => a === auction.id)
+                }
+                userId={session?.user?.pk}
+              />
+            );
+          })}
       </div>
     </div>
   );

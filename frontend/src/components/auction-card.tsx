@@ -5,6 +5,7 @@ import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import BidComponent from "./bid-component";
+import { Badge } from "./ui/badge";
 import {
   Card,
   CardContent,
@@ -14,7 +15,17 @@ import {
   CardTitle,
 } from "./ui/card";
 
-const AuctionCard = ({ auction }: { auction: Auction }) => {
+const AuctionCard = ({
+  auction,
+  isWinning,
+  isBidding,
+  userId,
+}: {
+  auction: Auction;
+  isBidding: boolean;
+  isWinning: boolean;
+  userId?: number;
+}) => {
   return (
     <Link href={`/auction/${auction.id}`}>
       <Card className="relative grid h-full grid-cols-1 overflow-hidden transition-colors hover:bg-accent ">
@@ -64,7 +75,7 @@ const AuctionCard = ({ auction }: { auction: Auction }) => {
             </Linkify>
           </CardDescription>
         </CardContent>
-        <CardFooter className="flex justify-between self-end pb-4">
+        <CardFooter className="flex flex-col gap-3 self-end pb-4">
           {auction.top_bidder_firstname && auction.top_bid_value ? (
             <BidComponent
               bid={{
@@ -89,6 +100,29 @@ const AuctionCard = ({ auction }: { auction: Auction }) => {
               isWinner={false}
               isUser={false}
             />
+          )}
+          {isBidding && isWinning ? (
+            <Badge
+              variant={"defaultNoHover"}
+              className="w-full justify-center bg-green-600 dark:bg-green-400"
+            >
+              Wygrywasz tę aukcję!
+            </Badge>
+          ) : isBidding && !isWinning ? (
+            <Badge
+              variant={"defaultNoHover"}
+              className="w-full justify-center bg-red-600 dark:bg-red-400"
+            >
+              Przegrywasz tę aukcję!
+            </Badge>
+          ) : userId && auction.user === userId ? (
+            <Badge variant={"defaultNoHover"} className="w-full justify-center">
+              To Twoja aukcja ;)
+            </Badge>
+          ) : (
+            <Badge variant={"outline"} className="w-full justify-center">
+              Nie licytujesz tej aukcji
+            </Badge>
           )}
         </CardFooter>
       </Card>

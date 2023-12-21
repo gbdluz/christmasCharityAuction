@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
+import { useBiddingAuctions, useWinningAuctions } from "./swr/use-auctions";
 
 export enum AuctionsFilterOptions {
   My = "my",
@@ -35,29 +36,11 @@ const AuctionList = () => {
     isLoading,
   } = useSWR<Auction[]>(`auction/list`, auctionsFetcher);
 
-  const biddingAuctionsFetcher = (url: string) =>
-    axios
-      .get(process.env.NEXT_PUBLIC_BACKEND_URL + url, {
-        headers: { Authorization: "Bearer " + session?.access_token },
-      })
-      .then((res) => res.data);
-
-  const { data: biddingAuctionsData } = useSWR<{ auctions: number[] }>(
-    `user/bid_auctions/all`,
-    biddingAuctionsFetcher,
+  const { biddingAuctions: biddingAuctions } = useBiddingAuctions(
+    session?.access_token || "",
   );
 
-  const winningAuctionsFetcher = (url: string) =>
-    axios
-      .get(process.env.NEXT_PUBLIC_BACKEND_URL + url, {
-        headers: { Authorization: "Bearer " + session?.access_token },
-      })
-      .then((res) => res.data);
-
-  const { data: winningAuctionsData } = useSWR<{ auctions: number[] }>(
-    `user/bid_auctions/all`,
-    biddingAuctionsFetcher,
-  );
+  const { winningAuctions } = useWinningAuctions(session?.access_token || "");
 
   if (isLoading) return <Loader />;
 
@@ -78,18 +61,18 @@ const AuctionList = () => {
     );
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex w-full justify-center">
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex w-full justify-center md:justify-start">
         <AuctionsFilter setSelectedOption={setSelectedOption} />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {auctions
           .sort((a, b) => b.id - a.id)
           .filter((auction) => {
             if (selectedOption === AuctionsFilterOptions.My) {
               return auction.user === session?.user?.pk;
             } else if (selectedOption === AuctionsFilterOptions.Bid) {
-              return biddingAuctionsData?.auctions?.includes(auction.id);
+              return biddingAuctions?.auctions?.includes(auction.id);
             } else {
               return true;
             }

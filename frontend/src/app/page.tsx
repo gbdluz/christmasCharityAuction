@@ -1,5 +1,6 @@
 "use client";
 
+import AuctionsStats from "@/components/auctions-stats";
 import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -8,6 +9,7 @@ import AuctionList from "./auction-list";
 
 export default function Home() {
   const { data: session, status } = useSession();
+
   if (status === "loading") return <Loader />;
   if (status === "unauthenticated")
     return (
@@ -40,7 +42,7 @@ export default function Home() {
         </a>{" "}
         🥖❤️
       </p>
-      <p className="text-xl">
+      {/* <p className="text-xl">
         Jeśli macie pomysły na funkcję dla tej aplikacji, możecie je zgłaszać{" "}
         <a
           className="text-primary underline underline-offset-4 hover:opacity-90"
@@ -49,7 +51,8 @@ export default function Home() {
           tutaj
         </a>{" "}
         💡👨‍💻
-      </p>
+      </p> */}
+      <AuctionsStats />
       <Separator />
       <AuctionList />
     </main>

@@ -152,6 +152,7 @@ const AuctionComponent = ({ auction }: { auction: Auction }) => {
                 options={{
                   defaultProtocol: "https",
                   className: "text-blue-500 underline break-all",
+                  target: "_blank",
                 }}
               >
                 {isValidating ? description : auction.description}

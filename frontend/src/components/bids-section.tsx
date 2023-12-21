@@ -2,7 +2,6 @@
 
 import { Auction } from "@/lib/types/auction";
 import axios from "axios";
-import { min } from "date-fns";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { KeyedMutator } from "swr";

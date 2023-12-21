@@ -124,6 +124,9 @@ const AuctionsStats = () => {
                   {new Intl.PluralRules("pl").select(myAuctions?.length) ===
                   "few"
                     ? "aukcje"
+                    : new Intl.PluralRules("pl").select(myAuctions?.length) ===
+                      "one"
+                    ? "aukcję"
                     : "aukcji"}
                 </span>
                 <span>, za:</span>

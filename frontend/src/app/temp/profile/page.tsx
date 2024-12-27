@@ -35,7 +35,7 @@ export default function Profile() {
           title: "Testowy tytuł",
           description: "To jest całkiem długi opis tej aukcji",
           num_of_winners: 2,
-          deadline: "2024-12-21",
+          deadline: "2025-12-21",
           min_bid_value: 10,
           auction_end_data: "2023-12-21",
           is_paid: false,
